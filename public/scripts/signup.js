@@ -1,11 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 중복 확인을 위한 임시 데이터
-  const users = [
-    { email: 'hayden@gmail.com', nickname: 'hayden' },
-    { email: 'user@example.com', nickname: 'user' },
-  ];
+  // 사용자 데이터 저장 변수
+  let users = [];
 
-  // 필요한 DOM 요소 선택
   const signupForm = document.querySelector('.signup-form');
   const email = document.getElementById('email');
   const password = document.getElementById('password');
@@ -50,21 +46,73 @@ document.addEventListener('DOMContentLoaded', () => {
     nickname.value.trim().length > 0 &&
     nickname.value.trim().length <= 10 &&
     !checkNicknameDuplication(nickname.value.trim());
-  // profileUpload.files.length > 0; //보류
 
   // 토스트 메시지 + 리다이렉트
   const showToastAndRedirect = (message, url, duration = 2000) => {
-    // 토스트 메시지 생성
     const toast = document.createElement('div');
     toast.className = 'toast-message';
     toast.textContent = message;
     document.body.appendChild(toast);
 
-    // 리다이렉트
     setTimeout(() => {
-      toast.remove(); // 토스트 메시지 제거
-      window.location.href = url; // 페이지 이동
+      toast.remove();
+      window.location.href = url;
     }, duration);
+  };
+
+  // 사용자 데이터 추가 (회원가입 시뮬레이션)
+  const signup = async (userData) => {
+    try {
+      const response = await fetch('http://localhost:3000/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('회원가입 성공:', result);
+        showToastAndRedirect('회원가입이 완료되었습니다.', './login', 2000);
+      } else if (response.status === 400) {
+        const error = await response.json();
+        console.error('잘못된 요청:', error);
+        showToast('입력값을 확인해주세요.');
+      } else {
+        throw new Error('서버 오류');
+      }
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+      showToast('회원가입에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  // 사용자 데이터 추가 (회원가입 시뮬레이션)
+  const addUser = async () => {
+    try {
+      const newUser = {
+        email: email.value.trim(),
+        password: password.value.trim(),
+        nickname: nickname.value.trim(),
+        profilePicture: profileUpload.files[0]
+          ? URL.createObjectURL(profileUpload.files[0])
+          : null,
+      };
+
+      // 로컬에 새 사용자 추가
+      users.push(newUser);
+
+      console.log('New user added:', newUser); // 서버 저장 시뮬레이션
+      showToastAndRedirect(
+        '회원가입이 완료되었습니다.',
+        '/pages/login.html',
+        2000
+      );
+    } catch (error) {
+      console.error('Error adding user:', error);
+      showToast('회원가입에 실패했습니다.');
+    }
   };
 
   // 이벤트 핸들러
@@ -202,12 +250,15 @@ document.addEventListener('DOMContentLoaded', () => {
       : '#ACA0EB';
   });
 
-  signupForm.addEventListener('submit', (event) => {
+  signupForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (checkAllValid()) {
-      showToastAndRedirect('회원가입이 완료되었습니다.', './login', 2000);
+      await addUser(); // 사용자 데이터 추가
     } else {
       showToast('모든 필드를 올바르게 입력해주세요.');
     }
   });
+
+  // 초기화
+  fetchUsers(); // 기존 사용자 데이터 가져오기
 });

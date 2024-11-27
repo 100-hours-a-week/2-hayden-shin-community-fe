@@ -10,10 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalCancelButton = document.getElementById('modal-cancel-button');
   const modalConfirmButton = document.getElementById('modal-confirm-button');
 
-  // 사용자 데이터 저장 변수
-  let users = [];
-  let currentUser = null;
-
   // 토스트 메시지 표시
   const showToast = (message) => {
     const toast = document.createElement('div');
@@ -107,7 +103,116 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // 프로필 아이콘 드롭다운
+  // 로그아웃 요청
+  const logout = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 204) {
+        showToastAndRedirect('로그아웃 성공!', './login');
+      } else if (response.status === 400) {
+        showToast('잘못된 요청입니다.');
+      } else {
+        throw new Error('서버 오류');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+      showToast('서버와 연결할 수 없습니다.');
+    }
+  };
+
+  // 회원탈퇴 요청
+  const deleteAccount = async (password) => {
+    try {
+      const response = await fetch('http://localhost:3000/users', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (response.status === 204) {
+        showToastAndRedirect('회원 탈퇴가 완료되었습니다.', './login');
+      } else if (response.status === 400) {
+        showToast('잘못된 요청입니다.');
+      } else if (response.status === 401) {
+        showToast('인증에 실패했습니다. 비밀번호를 확인하세요.');
+      } else {
+        throw new Error('서버 오류');
+      }
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      showToast('회원 탈퇴에 실패했습니다.');
+    }
+  };
+
+  // 닉네임 변경 요청
+  const updateNickname = async (newNickname) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/${currentUser.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ new_nickname: newNickname }),
+        }
+      );
+
+      if (response.status === 201) {
+        showToast('닉네임이 성공적으로 수정되었습니다.');
+        currentUser.nickname = newNickname; // 로컬 데이터 업데이트
+      } else if (response.status === 400) {
+        showToast('닉네임 수정 요청이 잘못되었습니다.');
+      } else if (response.status === 401) {
+        showToast('인증되지 않은 사용자입니다.');
+      } else {
+        throw new Error('서버 오류');
+      }
+    } catch (error) {
+      console.error('Error updating nickname:', error);
+      showToast('닉네임 수정에 실패했습니다.');
+    }
+  };
+
+  //프로필 이미지 변경 요청
+  const updateProfileImage = async (newImageURL) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/${currentUser.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ new_profile_image: newImageURL }),
+        }
+      );
+
+      if (response.status === 201) {
+        showToast('프로필 이미지가 성공적으로 수정되었습니다.');
+        currentUser.profileImage = newImageURL; // 로컬 데이터 업데이트
+      } else if (response.status === 400) {
+        showToast('프로필 이미지 요청이 잘못되었습니다.');
+      } else if (response.status === 401) {
+        showToast('인증되지 않은 사용자입니다.');
+      } else {
+        throw new Error('서버 오류');
+      }
+    } catch (error) {
+      console.error('Error updating profile image:', error);
+      showToast('프로필 이미지 수정에 실패했습니다.');
+    }
+  };
+
+  // 헤더 프로필 아이콘 드롭다운
   const toggleDropdownMenu = (event) => {
     event.stopPropagation();
     dropdownMenu.style.display =
@@ -161,7 +266,5 @@ document.addEventListener('DOMContentLoaded', () => {
   deleteAccountButton.addEventListener('click', openModal);
   modalCancelButton.addEventListener('click', closeModal);
   modalConfirmButton.addEventListener('click', confirmDeleteAccount);
-
-  // 초기화
-  fetchUsers();
+  editNicknameButton.addEventListener('click', updateNickname);
 });

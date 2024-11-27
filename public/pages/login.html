@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
-    <link rel="stylesheet" href="../styles/global.css">
-    <link rel="stylesheet" href="../styles/login.css">
+    <link rel="stylesheet" href="/styles/global.css">
+    <link rel="stylesheet" href="/styles/login.css">
 </head>
 <body>
     <div class="container">
@@ -16,7 +16,7 @@
         <section class="form-container">
             <h2 class="form-title">로그인</h2>
             
-            <form action="#" method="POST" class="login-form">
+            <form action="/" method="POST" class="login-form">
                 <div class="form-group">
                     <label for="email">이메일</label>
                     <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" />
@@ -31,7 +31,7 @@
                 
                 <button type="submit" class="submit-button" id="login-button" disabled>로그인</button>
             </form>
-            <a href="signup.html" class="link">회원가입</a>
+            <a href="/pages/signup.html" class="link">회원가입</a>
         </section>
     </div>
 
@@ -39,6 +39,6 @@
     <script src="../scripts/common/utils.js"></script>
     <script src="../scripts/common/auth.js"></script>
     <script src="../scripts/common/constants.js"></script>
-    <script src="../scripts/login.js"></script>
+    <script src="/scripts/login.js" defer></script>
 </body>
 </html>

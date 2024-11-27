@@ -127,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (allFieldsValid()) {
       await updatePassword(); // 비밀번호 업데이트
-      showToastAndRedirect('비밀번호가 성공적으로 변경되었습니다!');
     }
   });
 });
