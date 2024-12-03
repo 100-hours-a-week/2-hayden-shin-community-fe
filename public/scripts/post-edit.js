@@ -7,7 +7,7 @@ const charCountDisplay = document.getElementById('char-count');
 
 // 상수
 const MAX_TITLE_LENGTH = 26;
-const MAX_CONTENT_LENGTH = 500;
+const MAX_CONTENT_LENGTH = 1000;
 
 // 유틸리티 함수
 const showToast = (message) => {
@@ -49,10 +49,9 @@ const checkFormValidity = () => {
 
   updateButton.disabled = !(isTitleFilled && isContentFilled);
   updateButton.style.backgroundColor =
-    isTitleFilled && isContentFklled ? '#7F6AEE' : '#ACA0EB';
+    isTitleFilled && isContentFilled ? '#7F6AEE' : '#ACA0EB';
 };
 
-// 게시글 수정 함수
 // 게시글 수정 함수
 async function editPost(postId, newTitle, newContent, newImageUrl) {
   try {
@@ -62,31 +61,27 @@ async function editPost(postId, newTitle, newContent, newImageUrl) {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({
-        current_title: document
-          .getElementById('post-title')
-          .getAttribute('value'), // 현재 제목
-        current_content: document.getElementById('post-content').textContent, // 현재 내용
-        current_image_url: '', // 현재 이미지 URL은 선택 사항
-        new_title: newTitle, // 새로운 제목
-        new_content: newContent, // 새로운 내용
-        new_image_url: newImageUrl, // 새로운 이미지 URL
+        newTitle,
+        newContent,
+        newImageUrl,
       }),
     });
 
-    if (response.status === 201 || response.status === 204) {
+    if (response.status === 200 || response.status === 204) {
       alert('게시글이 성공적으로 수정되었습니다.');
-      window.location.href = `/post-view.html?id=${postId}`;
+      window.location.href = `/post-view?id=${postId}`;
     } else if (response.status === 400) {
       alert('잘못된 요청입니다. 입력값을 확인해주세요.');
     } else if (response.status === 401) {
       alert('인증되지 않은 사용자입니다. 다시 로그인해주세요.');
-      window.location.href = '/login.html';
+      window.location.href = '/login';
     } else if (response.status === 403) {
       alert('이 게시글을 수정할 권한이 없습니다.');
     } else if (response.status === 404) {
       alert('수정하려는 게시글을 찾을 수 없습니다.');
-      window.location.href = '/post-list.html';
+      window.location.href = '/post-list';
     } else if (response.status === 500) {
       alert('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } else {
@@ -105,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!postId) {
     alert('게시글 ID를 찾을 수 없습니다.');
-    window.location.href = '/post-list.html';
+    window.location.href = '/post-list';
     return;
   }
 
@@ -155,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!postId) {
     alert('게시글 ID를 찾을 수 없습니다.');
-    window.location.href = '/post-list.html';
+    window.location.href = '/post-list';
     return;
   }
 

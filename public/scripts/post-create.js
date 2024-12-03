@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const title = document.getElementById('post-title');
+  const content = document.getElementById('post-content');
+  const postButton = document.getElementById('post-button');
   const postHelper = document.getElementById('post-helper');
   const imagePreview = document.getElementById('image-preview');
 
@@ -31,19 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // 초기 버튼 상태 설정
-  postButton.disabled = true;
-  postButton.style.backgroundColor = '#ACA0EB'; // 초기 비활성화 상태
-
   // 제목 입력 제한
   title.addEventListener('input', () => {
-    if (title.length > 26) {
-      title = title.substring(0, 26); // 26자 제한
+    if (title.value.length > 26) {
+      title.value = title.value.substring(0, 26); // 26자 제한
     }
     updateButtonState();
   });
 
+  content.addEventListener('input', () => {
+    updateButtonState();
+  });
+
   // 이미지 업로드 미리보기
+  const imageUrl = document.getElementById('image-url');
   imageUrl.addEventListener('change', () => {
     const file = imageUrl.files[0];
 
@@ -95,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(requestData),
       });
 
@@ -106,8 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         console.log('게시글 생성 응답:', result);
 
+        // await postList();
         // 게시글 작성 후 목록 페이지로 이동
-        window.location.href = '/pages/post-list.html';
+        window.location.href = '/post-list';
       } else if (response.status === 400) {
         alert('요청이 잘못되었습니다. 제목 및 내용을 확인해주세요.');
       } else if (response.status === 500) {
@@ -122,29 +128,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 초기 버튼 상태 설정
+  postButton.disabled = true;
+  postButton.style.backgroundColor = '#ACA0EB'; // 초기 비활성화 상태
+
   // 이벤트 리스너를 통해 게시글 작성 처리
-  const postButton = document.getElementById('post-button');
-  postButton.addEventListener('click', () => {
-    const title = document.getElementById('post-title').value; // 제목 입력 값
-    const content = document.getElementById('post-content').value; // 내용 입력 값
-    const imageUrl = document.getElementById('post-image-url').value; // 이미지 URL 입력 값
-
-    createPost(title, content, imageUrl); // createPost 함수 호출
-  });
-
-  // 게시글 작성 버튼 클릭 이벤트
-  postButton.addEventListener('click', async (e) => {
+  postButton.addEventListener('click', (e) => {
     e.preventDefault(); // 기본 폼 제출 동작 방지
 
-    const isTitleFilled = title.value.trim() !== '';
-    const isContentFilled = content.value.trim() !== '';
+    const titleValue = title.value;
+    const contentValue = content.value;
+    const imageUrlValue = imageUrl.value;
 
-    if (!isTitleFilled || !isContentFilled) {
-      postHelper.textContent = '*제목과 내용을 모두 작성해주세요.';
-      postHelper.style.color = 'red';
-    } else {
-      postHelper.textContent = ''; // 헬퍼 텍스트 초기화
-      await createPost(); // 게시글 추가 함수 호출
-    }
+    createPost(titleValue, contentValue, imageUrlValue); // createPost 함수 호출
   });
+
+  title.addEventListener('input', () => {});
 });

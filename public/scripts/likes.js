@@ -9,6 +9,7 @@ async function increaseLike(postId) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ like: true }), // 좋아요 증가 플래그
       }
     );
@@ -17,16 +18,19 @@ async function increaseLike(postId) {
     if (response.status === 200) {
       const result = await response.json();
       console.log('좋아요 증가 성공:', result.data);
+      setTimeout(() => {
+        showToast('좋아요');
+      }, 2000);
 
       // 좋아요 UI 업데이트
       const likeCountElement = document.getElementById('like-button');
-      likeCountElement.innerHTML = `${result.data.like_cnt}<span>좋아요</span>`;
+      likeCountElement.innerHTML = `${result.data.likes}<span>좋아요</span>`;
     } else if (response.status === 401) {
       alert('인증되지 않은 사용자입니다. 다시 로그인해주세요.');
-      window.location.href = '/login.html'; // 로그인 페이지로 이동
+      window.location.href = '/pages/login'; // 로그인 페이지로 이동
     } else if (response.status === 404) {
       alert('게시글을 찾을 수 없습니다.');
-      window.location.href = '/post-list.html'; // 게시글 목록 페이지로 이동
+      window.location.href = '/pages/post-list'; // 게시글 목록 페이지로 이동
     } else if (response.status === 500) {
       alert('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } else {
@@ -39,19 +43,6 @@ async function increaseLike(postId) {
   }
 }
 
-// 좋아요 증가 이벤트
-document.getElementById('like-button').addEventListener('click', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const postId = urlParams.get('id'); // URL에서 게시글 ID 가져오기
-
-  if (!postId) {
-    alert('게시글 ID를 확인할 수 없습니다.');
-    return;
-  }
-
-  increaseLike(postId); // 좋아요 증가 함수 호출
-});
-
 // 좋아요 취소 요청
 async function cancelLike(postId) {
   try {
@@ -63,6 +54,7 @@ async function cancelLike(postId) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ like: false }), // 좋아요 취소 플래그
       }
     );
@@ -74,13 +66,13 @@ async function cancelLike(postId) {
 
       // 좋아요 UI 업데이트
       const likeCountElement = document.getElementById('like-button');
-      likeCountElement.innerHTML = `${result.data.like_cnt}<span>좋아요</span>`;
+      likeCountElement.innerHTML = `${result.data.likes}<span>좋아요</span>`;
     } else if (response.status === 401) {
       alert('인증되지 않은 사용자입니다. 다시 로그인해주세요.');
-      window.location.href = '/login.html'; // 로그인 페이지로 이동
+      window.location.href = '/pages/login'; // 로그인 페이지로 이동
     } else if (response.status === 404) {
       alert('게시글을 찾을 수 없습니다.');
-      window.location.href = '/post-list.html'; // 게시글 목록 페이지로 이동
+      window.location.href = '/pages/post-list'; // 게시글 목록 페이지로 이동
     } else if (response.status === 500) {
       alert('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } else {
@@ -108,7 +100,7 @@ document.getElementById('like-button').addEventListener('click', () => {
     cancelLike(postId); // 좋아요 취소 함수 호출
     likeButton.classList.remove('liked'); // 버튼 상태 변경
   } else {
-    increaseLike(postId); // 좋아요 증가 함수 호출 (별도 구현됨)
+    increaseLike(postId); // 좋아요 증가 함수 호출
     likeButton.classList.add('liked'); // 버튼 상태 변경
   }
 });

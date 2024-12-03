@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 로그아웃 성공: 로컬 스토리지 삭제 및 로그인 페이지로 리다이렉트
         alert('로그아웃 성공! 로그인 페이지로 이동합니다.');
         localStorage.removeItem('user_nickname'); // 사용자 정보 삭제
-        window.location.href = '/pages/login.html';
+        window.location.href = '/login';
       } else if (response.status === 400) {
         const result = await response.json();
         alert('로그아웃 실패: ' + result.message);
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (newProfileImage) requestData.new_profile_image = newProfileImage;
 
     try {
-      // API 호출: 닉네임 및/또는 프로필 이미지 업데이트 요청
+      // API 호출: 닉네임 or 프로필 이미지 업데이트 요청
       const response = await fetch(`http://localhost:3000/users/${userId}`, {
         method: 'PATCH',
         headers: {
@@ -185,19 +185,19 @@ document.addEventListener('DOMContentLoaded', () => {
   async function deleteAccount(userId) {
     try {
       // DELETE 요청을 통해 계정 삭제
-      const response = await fetch(`http://localhost:3000/users/{user_id}`, {
+      const response = await fetch(`http://localhost:3000/users/{userId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ user_id }), // 비밀번호를 요청 본문으로 전송
+        body: JSON.stringify({ userId }), // 비밀번호를 요청 본문으로 전송
       });
 
       // 서버 응답 상태 코드 처리
       if (response.status === 204) {
         alert('계정이 성공적으로 삭제되었습니다.');
         localStorage.clear(); // 로컬 스토리지 초기화
-        window.location.href = '/signup.html'; // 회원가입 페이지로 이동
+        window.location.href = '/signup'; // 회원가입 페이지로 이동
       } else if (response.status === 400) {
         alert('요청이 잘못되었습니다. 입력값을 확인해주세요.');
       } else if (response.status === 401) {
@@ -239,9 +239,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleDropdownClick = (event) => {
     const { id } = event.target;
     const navigationMap = {
-      'profile-update': '/pages/profile-update',
-      'password-update': '/pages/password-update',
-      logout: '/pages/login',
+      'profile-update': '/profile-update',
+      'password-update': '/password-update',
+      logout: '/login',
     };
 
     if (navigationMap[id]) {

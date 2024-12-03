@@ -11,6 +11,9 @@ async function createComment(postId) {
 
   try {
     // API 호출: 댓글 등록 요청
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id'); // URL에서 게시글 ID 가져오기
+
     const response = await fetch(
       `http://localhost:3000/posts/${postId}/comments`,
       {
@@ -18,6 +21,7 @@ async function createComment(postId) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ comment: commentText }),
       }
     );
@@ -32,7 +36,7 @@ async function createComment(postId) {
       alert('댓글이 성공적으로 등록되었습니다.');
     } else if (response.status === 401) {
       alert('인증되지 않은 사용자입니다. 다시 로그인해주세요.');
-      window.location.href = '/login.html';
+      window.location.href = '/login';
     } else if (response.status === 400) {
       alert('잘못된 요청입니다. 댓글 내용을 확인해주세요.');
     } else if (response.status === 429) {
@@ -59,15 +63,15 @@ function renderComment(commentData) {
     <div class="comment-header">
       <div class="comment-author">
         <img src="../assets/headerpic.png" alt="User Icon" class="author-img">
-        <span class="comment-author">${commentData.user_nickname}</span>
-        <span class="comment-date">${formatDateTime(commentData.date)}</span>
+        <span class="comment-author">${commentData.author_nickname}</span>
+        <span class="comment-date">${formatDateTime(commentData.created_at)}</span>
       </div>
       <div class="comment-buttons">
         <button class="edit-comment-button">수정</button>
         <button class="delete-comment-button">삭제</button>
       </div>
     </div>
-    <p class="comment-content">${commentData.comment}</p>
+    <p class="comment-content">${commentData.content}</p>
   `;
 
   // 댓글 리스트에 새 댓글 추가
@@ -76,7 +80,7 @@ function renderComment(commentData) {
 
 document.getElementById('comment-button').addEventListener('click', () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const postId = urlParams.get('id'); // 현재 게시글 ID 가져오기
+  const postId = urlParams.get('id'); // URL에서 게시글 ID 가져오기
 
   if (!postId) {
     alert('게시글 ID를 확인할 수 없습니다.');
@@ -86,7 +90,7 @@ document.getElementById('comment-button').addEventListener('click', () => {
   createComment(postId); // 댓글 등록 함수 호출
 });
 
-async function editComment(postId, commentId, currentComment, newComment) {
+async function editComment(postId, commentId, newComment) {
   try {
     // API 호출: 댓글 수정 요청
     const response = await fetch(
@@ -96,11 +100,9 @@ async function editComment(postId, commentId, currentComment, newComment) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
-          post_id: postId,
-          comment_id: commentId,
-          current_comment: currentComment,
-          new_comment: newComment,
+          newComment,
         }),
       }
     );
@@ -119,7 +121,7 @@ async function editComment(postId, commentId, currentComment, newComment) {
       alert('잘못된 요청입니다. 입력값을 확인해주세요.');
     } else if (response.status === 401) {
       alert('인증되지 않은 사용자입니다. 다시 로그인해주세요.');
-      window.location.href = '/login.html'; // 로그인 페이지로 이동
+      window.location.href = '/login'; // 로그인 페이지로 이동
     } else if (response.status === 403) {
       alert('이 댓글을 수정할 권한이 없습니다.');
     } else if (response.status === 404) {
@@ -151,8 +153,7 @@ document.addEventListener('click', (event) => {
       return;
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('id'); // URL에서 게시글 ID 가져오기
+    const postId = window.location.pathname.split('/').pop(); // URL에서 게시글 ID 가져오기
 
     if (!postId || !commentId) {
       alert('잘못된 요청입니다. 게시글 또는 댓글 정보를 확인할 수 없습니다.');
@@ -189,7 +190,7 @@ async function deleteComment(postId, commentId) {
       }
     } else if (response.status === 401) {
       alert('인증되지 않은 사용자입니다. 다시 로그인해주세요.');
-      window.location.href = '/login.html'; // 로그인 페이지로 이동
+      window.location.href = '/login'; // 로그인 페이지로 이동
     } else if (response.status === 403) {
       alert('이 댓글을 삭제할 권한이 없습니다.');
     } else if (response.status === 404) {
@@ -211,8 +212,7 @@ document.addEventListener('click', (event) => {
   if (event.target.classList.contains('delete-comment-button')) {
     const commentElement = event.target.closest('.comment');
     const commentId = commentElement.dataset.commentId; // 댓글 ID 가져오기
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('id'); // URL에서 게시글 ID 가져오기
+    const postId = window.location.pathname.split('/').pop(); // URL에서 게시글 ID 가져오기
 
     if (!postId || !commentId) {
       alert('잘못된 요청입니다. 게시글 또는 댓글 정보를 확인할 수 없습니다.');
@@ -226,3 +226,18 @@ document.addEventListener('click', (event) => {
     }
   }
 });
+
+commentInput.addEventListener('input', () => {
+  toggleButtonState(commentButton, commentInput.value.trim().length > 0);
+});
+
+// commentButton.addEventListener('click', () => {
+//   const commentText = commentInput.value.trim();
+//   if (!commentText) return;
+//   createComment(commentText);
+//   commentInput.value = '';
+//   toggleButtonState(commentButton, false);
+// });
+
+// 초기화
+toggleButtonState(commentButton, false);
