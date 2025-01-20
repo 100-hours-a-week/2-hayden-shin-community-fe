@@ -65,7 +65,7 @@ async function renderPost(postData) {
     : formatDateTime(postData.createdAt);
   postContent.innerHTML = postData.content;
 
-  userImage.src = `${CDN_URL}${postData.url}`;
+  userImage.src = `${CDN_URL}${postData.url || '/default-profile-image.jpg'}`;
   postUser.textContent = postData.username;
 
   if (postData.image) {
