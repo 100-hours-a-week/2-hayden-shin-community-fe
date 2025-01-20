@@ -46,7 +46,7 @@ const renderPosts = (postsData) => {
         </div>
         <hr />
         <div class="post-user">
-          <img src="${CDN_URL}${url}" alt="프로필 이미지" class="post-user-img">
+          <img src="${CDN_URL}${url} || ${CDN_URL}/default-profile-image.jpg" alt="프로필 이미지" class="post-user-img">
           <span>${username}</span>
         </div>
       `;
