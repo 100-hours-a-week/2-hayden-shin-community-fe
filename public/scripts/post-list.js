@@ -35,6 +35,9 @@ const renderPosts = (postsData) => {
       const postItem = document.createElement('div');
       postItem.classList.add('post-item');
       postItem.dataset.id = id;
+      const userImageUrl = commentData.url
+        ? `${CDN_URL}${url}`
+        : `${CDN_URL}/default-profile-image.jpg`;
 
       postItem.innerHTML = `
         <h3 class="post-title">${title}</h3>
@@ -46,7 +49,7 @@ const renderPosts = (postsData) => {
         </div>
         <hr />
         <div class="post-user">
-          <img src="${CDN_URL}${url} || ${CDN_URL}/default-profile-image.jpg" alt="프로필 이미지" class="post-user-img">
+          <img src="${userImageUrl}" alt="프로필 이미지" class="post-user-img">
           <span>${username}</span>
         </div>
       `;
