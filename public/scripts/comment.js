@@ -52,14 +52,11 @@ const renderComment = (commentData) => {
   const commentElement = document.createElement('div');
   commentElement.classList.add('comment');
   commentElement.setAttribute('data-comment-id', commentData.id);
-  const userImageUrl = commentData.url
-    ? `${CDN_URL}${commentData.url}`
-    : `${CDN_URL}/default-profile-image.jpg`;
 
   commentElement.innerHTML = `
     <div class="comment-header">
       <div class="comment-user">
-        <img src="${userImageUrl}" alt="User Icon" class="user-img">
+        <img src="${CDN_URL}${commentData.url || '/default-profile-image.jpg'}" alt="User Icon" class="user-img">
         <span class="comment-user">${commentData.username}</span>
         <span class="comment-date">${formatDateTime(commentData.createdAt)}</span>
       </div>
