@@ -1,63 +1,52 @@
-name: CI/CD Pipeline
+name: Deploy to Elastic Beanstalk
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
+    name: Deploy Application
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    # Checkout the code
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+    # Configure AWS CLI
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Build and Push Docker Image to ECR
-        run: |
-          # Docker 이미지 빌드 및 AWS ECR 푸시
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest .
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
+    # Build Docker image
+    - name: Build Docker Image
+      run: |
+        docker build -t frontend .
 
-      - name: Prepare SSH Key
-        run: |
-          # SSH 키 준비
-          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
-          chmod 600 key.pem
+    # Authenticate to ECR
+    - name: Authenticate to Amazon ECR
+      run: |
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-      - name: Deploy to EC2
-        run: |
-          HOST=${{ secrets.EC2_HOST }}
-          USER=${{ secrets.EC2_USER }}
+    # Tag and Push Docker Image to ECR
+    - name: Push Docker Image to ECR
+      run: |
+        docker tag frontend:latest <AWS_ACCOUNT_ID>.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
+        docker push <AWS_ACCOUNT_ID>.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
 
-          ssh -o StrictHostKeyChecking=no -i key.pem $USER@$HOST "
-            # 1. Git Repository에서 최신 코드 가져오기
-            cd /home/ubuntu/frontend || git clone git@github.com:100-hours-a-week/2-hayden-shin-community-fe.git /home/ubuntu/frontend;
-            cd /home/ubuntu/frontend;
-            git pull origin main;
-
-            # 2. Docker 이미지 Pull
-            echo 'Pulling the latest Docker image from ECR...';
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com;
-            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest;
-
-            # 3. 기존 컨테이너 중지 및 제거
-            echo 'Stopping and removing existing Docker container...';
-            docker stop frontend || true;
-            docker rm frontend || true;
-
-            # 4. 새 컨테이너 실행
-            echo 'Running the new Docker container...';
-            docker run -d -p 2000:2000 --name frontend ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest;
-
-            # 5. Nginx Reload
-            echo 'Reloading Nginx...';
-            sudo systemctl reload nginx;
-          "
+    # Deploy to Elastic Beanstalk
+    - name: Deploy to Elastic Beanstalk
+      run: |
+        zip -r deploy.zip Dockerrun.aws.json .ebextensions/
+        aws elasticbeanstalk create-application-version \
+          --application-name frontend \
+          --version-label v-${{ github.sha }} \
+          --source-bundle S3Bucket=elasticbeanstalk-${{ secrets.AWS_REGION }}-${{ github.run_id }},S3Key=deploy.zip
+        aws elasticbeanstalk update-environment \
+          --environment-name ${{ secrets.EB_ENV_NAME }} \
+          --version-label v-${{ github.sha }}
