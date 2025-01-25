@@ -45,8 +45,8 @@ jobs:
         zip -r deploy.zip Dockerrun.aws.json .ebextensions/
         aws elasticbeanstalk create-application-version \
           --application-name frontend \
-          --version-label v-${{ github.sha }} \
+          --version-label latest \
           --source-bundle S3Bucket=elasticbeanstalk-${{ secrets.AWS_REGION }}-${{ github.run_id }},S3Key=deploy.zip
         aws elasticbeanstalk update-environment \
           --environment-name ${{ secrets.EB_ENV_NAME }} \
-          --version-label v-${{ github.sha }}
+          --version-label latest
