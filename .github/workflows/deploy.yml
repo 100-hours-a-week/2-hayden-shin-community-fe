@@ -39,14 +39,18 @@ jobs:
         docker tag frontend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
         docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
 
+    # Create deployment package
+    - name: Create Deployment Package
+      run: |
+        zip -r deploy.zip Dockerrun.aws.json || exit 1
+
     # Deploy to Elastic Beanstalk
     - name: Deploy to Elastic Beanstalk
       run: |
-        zip -r deploy.zip Dockerrun.aws.json .ebextensions/
         aws elasticbeanstalk create-application-version \
           --application-name frontend \
           --version-label latest \
-          --source-bundle S3Bucket=elasticbeanstalk-${{ secrets.AWS_REGION }}-${{ github.run_id }},S3Key=deploy.zip
+          --source-bundle S3Bucket=elasticbeanstalk-${{ secrets.AWS_REGION }}-${{ secrets.AWS_ACCOUNT_ID }},S3Key=deploy.zip
         aws elasticbeanstalk update-environment \
           --environment-name ${{ secrets.EB_ENV_NAME }} \
           --version-label latest
