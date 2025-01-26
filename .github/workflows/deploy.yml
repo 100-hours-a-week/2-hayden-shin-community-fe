@@ -41,8 +41,7 @@ jobs:
 
     # Create deployment package
     - name: Create Deployment Package
-      run: |
-        zip -r deploy.zip Dockerrun.aws.json || exit 1
+      run: zip -r deploy.zip . -x '*.git*'
 
     # Deploy to Elastic Beanstalk
     - name: Deploy to Elastic Beanstalk
