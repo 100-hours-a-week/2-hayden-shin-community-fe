@@ -59,5 +59,6 @@ jobs:
         application_name: frontend
         environment_name: frontend-env
         version_label: v-${{ github.run_id }}-$(date +'%Y%m%d%H%M%S')
+        use_existing_version_if_available: true
         region: ap-northeast-2
         deployment_package: deploy.zip
