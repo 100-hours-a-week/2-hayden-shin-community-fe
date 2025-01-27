@@ -48,6 +48,11 @@ app.get('/password-update', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'pages/password-update.html'));
 });
 
+// health check
+app.get('/health', (req, res) => {
+  res.sendStatus(200);
+});
+
 // 서버 시작
 const PORT = 2000;
 app.listen(PORT, () => {
