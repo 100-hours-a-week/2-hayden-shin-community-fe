@@ -41,6 +41,11 @@ jobs:
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
+    # Generate Dockerrun.aws.json
+    - name: Generate Dockerrun.aws.json
+      run: |
+        sed "s|<ECR_REGISTRY>/<ECR_REPOSITORY>:<IMAGE_TAG>|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" Dockerrun.template.json > Dockerrun.aws.json
+
     # Create deployment package
     - name: Create Deployment Package
       run: zip -r deploy.zip . -x '*.git*'
