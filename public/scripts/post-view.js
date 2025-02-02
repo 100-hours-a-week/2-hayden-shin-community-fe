@@ -236,7 +236,7 @@ async function removeLikes(postId) {
   }
 }
 
-const dislikeIcon = document.selectQuery('.dislike-icon');
+const dislikeIcon = document.querySelector('.dislike-icon');
 const dislikeButton = document.SelectQuery('.dislike-button');
 // 싫어요 상태 초기화 함수
 async function fetchDislikeStatus(postId, dislikeIcon) {
