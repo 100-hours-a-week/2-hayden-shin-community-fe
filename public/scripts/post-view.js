@@ -170,7 +170,7 @@ async function fetchLikeStatus(postId, likeButton) {
 
     if (response.ok) {
       const result = await response.json();
-      if (result.data.isLiked && likeIcon.classList.contains('fa-regular')) {
+      if (result.data.isLiked) {
         likeButton.classList.add('liked');
         likeIcon.classList.add('like-icon--liked');
         likeIcon.classList.remove('fa-regular');
@@ -249,10 +249,7 @@ async function fetchDislikeStatus(postId, dislikeIcon) {
 
     if (response.ok) {
       const result = await response.json();
-      if (
-        result.data.isDisliked &&
-        dislikeIcon.classList.contains('fa-regular')
-      ) {
+      if (result.data.isDisliked) {
         dislikeIcon.classList.add('dislike-icon--disliked');
         dislikeIcon.classList.remove('fa-regular');
         dislikeIcon.classList.add('fa-solid');
