@@ -6,7 +6,7 @@ export const updateCommentCount = (postId) => {
   const commentList = document.getElementById(`comment-list`);
   const commentCountElement = document.getElementById(`comment-count`);
 
-  commentCountElement.innerHTML = `${commentList.childElementCount}<span>댓글</span>`;
+  commentCountElement.innerHTML = `<i class="fa-solid fa-comments"></i> <span>${commentList.childElementCount}</span><span>댓글</span>`;
 };
 
 // 댓글 등록 요청
