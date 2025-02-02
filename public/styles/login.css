@@ -1,28 +1,10 @@
+.header {
+  justify-content: center;
+}
 
-header {
+.header-title {
+  flex-grow: 1;  /* 여유 공간을 모두 차지하려고 시도 */
   display: flex;
   justify-content: center;
-  align-items: center;
-  /* justify-content: space-between; */
-  position: relative;
-
-  padding: 10px 20px;
-}
-
-
-.title {
-  margin: 0;
   text-align: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
 }
-
-
-/* .login-wrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-} */
