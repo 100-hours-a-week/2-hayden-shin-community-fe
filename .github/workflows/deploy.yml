@@ -49,6 +49,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            REPOSITORY=${{ env.REPOSITORY }}
+            echo "Using repository: ${REPOSITORY}"
             echo "Logging into ECR on EC2..."
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
             echo "Pulling latest image..."
