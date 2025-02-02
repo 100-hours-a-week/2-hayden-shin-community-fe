@@ -11,17 +11,19 @@
 
 <body>
     <div class="container">
-        <header>
-            <button class="back-button" onclick="window.history.back()">&lt;</button>
-            <h1 id="header">아무 말 대잔치</h1>
-            <img src="" alt="User Icon" id="header-profile-image" class="header-profile-image">
-            <div class="dropdown" id="dropdown-menu">
-                <li id="profile-update">회원정보수정</li>
-                <li id="password-update">비밀번호수정</li>
-                <li id="logout">로그아웃</li>
-            </div>
+        <header class="header">
+            <button class="back-button" onclick="window.history.back()">
+                <i class="fa-solid fa-circle-chevron-left back-icon"></i>
+            </button>
+            <h1 class="header-title" id="header">Hayden's Space</h1>
+            <img src="../assets/default-profile-image.jpg" alt="User Icon" id="header-profile-image" class="header-profile-image">
+                <div class="dropdown" id="dropdown-menu">
+                    <li id="profile-update">회원정보수정</li>
+                    <li id="password-update">비밀번호수정</li>
+                    <li id="logout">로그아웃</li>
+                </div>
+            </img>
         </header>
-        <hr class="header-line" />
 
         <section class="form-container">
             <!-- 게시글 제목 작성-->
