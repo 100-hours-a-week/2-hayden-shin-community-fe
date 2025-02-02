@@ -184,10 +184,6 @@ hr {
   cursor: pointer;
 }
 
-#like-button.liked {
-  font-weight: bold;
-}
-
 /* Comments */
 .comment-form {
   display: flex;
