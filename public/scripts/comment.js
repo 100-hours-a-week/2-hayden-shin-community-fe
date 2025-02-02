@@ -36,7 +36,7 @@ const createComment = async (postId) => {
       renderComment(result.data.created);
       updateCommentCount(postId);
       commentInput.value = '';
-      showToast('댓글이 성공적으로 등록되었습니다.');
+      showToast('댓글 등록 완료');
     } else {
       handleError(response.status, '댓글 등록 중 오류 발생');
     }
@@ -61,8 +61,8 @@ const renderComment = (commentData) => {
         <span class="comment-date">${formatDateTime(commentData.createdAt)}</span>
       </div>
       <div class="comment-buttons">
-        <button class="edit-comment-button">수정</button>
-        <button class="delete-comment-button">삭제</button>
+        <button class="edit-comment-button"><i class="fa-solid fa-pen-to-square edit-icon"></i></button>
+        <button class="delete-comment-button"><i class="fa-solid fa-trash delete-icon"></i></button>
       </div>
     </div>
     <p class="comment-content">${commentData.content}</p>
@@ -92,7 +92,7 @@ const editComment = async (postId, commentId, newContent) => {
       if (commentElement) {
         commentElement.textContent = newContent;
       }
-      showToast('댓글이 성공적으로 수정되었습니다.');
+      showToast('댓글 수정 완료');
     } else {
       handleError(response.status, '댓글 수정 중 오류 발생');
     }
@@ -120,7 +120,7 @@ const deleteComment = async (postId, commentId) => {
         commentElement.remove();
       }
       updateCommentCount(postId);
-      showToast('댓글이 성공적으로 삭제되었습니다.');
+      showToast('댓글 삭제 완료');
     } else {
       handleError(response.status, '댓글 삭제 중 오류 발생');
     }
