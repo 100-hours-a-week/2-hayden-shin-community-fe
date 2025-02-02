@@ -10,6 +10,7 @@
   --color-purple: #5149ce;
   --color-accent:  rgb(78,75,208);
   --color-gradient: linear-gradient(0deg, rgba(78,75,208,1) 12%, rgba(9,97,238,1) 88%);
+  --color-gradient-transparent: linear-gradient(0deg, rgba(78,75,208,0.95) 12%, rgba(9,97,238,0.8) 88%);
 
   /* Shadow */
   --shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

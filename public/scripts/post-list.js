@@ -28,7 +28,7 @@ const renderPosts = (postsData) => {
       viewCount = 0,
       commentCount = 0,
       likeCount = 0,
-      // userId,
+      dislikeCount = 0,
       username,
       url,
     }) => {
@@ -39,9 +39,10 @@ const renderPosts = (postsData) => {
       postItem.innerHTML = `
         <h3 class="post-title">${title}</h3>
         <div class="post-stats">
-          <span>조회수 ${formatNumber(viewCount)}</span>
-          <span>댓글수 ${formatNumber(commentCount)}</span>
-          <span>좋아요 ${formatNumber(likeCount)}</span>
+          <span><i class="fa-solid fa-binoculars view-icon"> ${formatNumber(viewCount)}</span>
+          <span><i class="fa-solid fa-comments comment-icon"></i> ${formatNumber(commentCount)}</span>
+          <span><i class="fa-solid fa-thumbs-up like-icon"></i> ${formatNumber(likeCount)}</span>
+          <span><i class="fa-solid fa-thumbs-down"></i> ${formatNumber(dislikeCount)}</span>
           <p class="post-date">${formatDateTime(createdAt)}</p>
         </div>
         <hr />
