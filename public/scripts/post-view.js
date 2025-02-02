@@ -77,7 +77,7 @@ async function renderPost(postData) {
 
   document.getElementById('like-button').innerHTML =
     `<i class="fa-regular fa-thumbs-up like-icon icon"></i> <span>${formatNumber(postData.likeCount)}</span><span>좋아요</span>`;
-  document.querySelector('.dislike-button').innerHTML =
+  document.getElementById('dislike-button').innerHTML =
     `<i class="fa-regular fa-thumbs-down dislike-icon icon"></i> <span>${formatNumber(postData.dislikeCount)}</span><span>싫어요</span>`;
   document.getElementById('view-count').innerHTML =
     `<i class="fa-solid fa-binoculars view-icon icon"></i> <span>${formatNumber(postData.viewCount)}</span><span>조회수</span>`;
