@@ -226,7 +226,7 @@ async function removeLikes(postId) {
       const result = await response.json();
       likeButton.classList.remove('liked');
       document.getElementById('like-button').innerHTML =
-        `<i class="fa-regular fa-thumbs-up like-icon icon liked"></i> <span>${formatNumber(result.data.likeCount)}</span><span>좋아요</span>`;
+        `<i class="fa-regular fa-thumbs-up like-icon icon"></i> <span>${formatNumber(result.data.likeCount)}</span><span>좋아요</span>`;
       showToast('좋아요 취소');
     } else {
       handleErrors(response.status, '/post-list');
@@ -237,7 +237,7 @@ async function removeLikes(postId) {
 }
 
 const dislikeIcon = document.querySelector('.dislike-icon');
-const dislikeButton = document.querySelector('.dislike-button');
+const dislikeButton = document.getElementById('dislike-button');
 // 싫어요 상태 초기화 함수
 async function fetchDislikeStatus(postId, dislikeIcon) {
   try {
@@ -282,8 +282,8 @@ async function addDislikes(postId) {
     if (response.ok) {
       const result = await response.json();
       dislikeIcon.classList.add('dislike-icon--disliked');
-      document.querySelector('.dislike-button').innerHTML =
-        `<i class="fa-solid fa-thumbs-up like-icon icon dislike-icon--disliked"></i> <span>${formatNumber(result.data.dislikeCount)}</span><span>좋아요</span>`;
+      document.getElementById('dislike-button').innerHTML =
+        `<i class="fa-solid fa-thumbs-down dislike-icon icon dislike-icon--disliked"></i> <span>${formatNumber(result.data.dislikeCount)}</span><span>좋아요</span>`;
       showToast('싫어요 성공');
     } else {
       handleErrors(response.status, '/post-list');
@@ -307,12 +307,12 @@ async function removeDislikes(postId) {
       dislikeIcon.classList.remove('dislike-icon--disliked');
       document.getElementById('dislike-button').innerHTML =
         `<i class="fa-regular fa-thumbs-down dislike-icon icon"></i> <span>${formatNumber(result.data.dislikeCount)}</span><span>싫어요</span>`;
-      showToast('좋아요 취소');
+      showToast('싫어요 취소');
     } else {
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('좋아요 취소 중 오류:', error);
+    console.error('싫어요 취소 중 오류:', error);
   }
 }
 
