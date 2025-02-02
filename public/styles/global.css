@@ -196,7 +196,7 @@ label {
 /* Forms */
 .form-container {
   display: block;
-  margin-top: 2rem;
+  margin: 2rem auto;
   padding: 1.5em var(--side-padding);
   border-radius: 4px;
   background: white;
