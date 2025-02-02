@@ -5,52 +5,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시물 보기</title>
+    <script src="https://kit.fontawesome.com/49b2ba6e89.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles/global.css">
     <link rel="stylesheet" href="../styles/post-view.css">
 </head>
 
 <body>
     <div class="container">
-        <header>
-            <button class="back-button" id="back-button" onclick="window.history.back()">&lt;</button>
-            <h1 id="header">아무 말 대잔치</h1>
-            <img src="" alt="User Icon" id="header-profile-image" class="header-profile-image">
-            <div class="dropdown" id="dropdown-menu">
-                <li id="profile-update">회원정보수정</li>
-                <li id="password-update">비밀번호수정</li>
-                <li id="logout">로그아웃</li>
-            </div>
+        <header class="header">
+            <button class="back-button" onclick="window.history.back()">
+                <i class="fa-solid fa-circle-chevron-left back-icon"></i>
+            </button>
+            <h1 class="header-title" id="header">Hayden's Space</h1>
+            <img src="../assets/default-profile-image.jpg" alt="User Icon" id="header-profile-image" class="header-profile-image">
+                <div class="dropdown" id="dropdown-menu">
+                    <li id="profile-update">회원정보수정</li>
+                    <li id="password-update">비밀번호수정</li>
+                    <li id="logout">로그아웃</li>
+                </div>
+            </img>
         </header>
-        <hr class="header-line" />
 
         <article class="post-detail">
             <header class="post-header">
-                <h2 class="post-title" id="post-title"></h2>
+                <h2 class="post-title" id="post-title">첫 번 째 게시글</h2>
                 <div class="post-meta">
                     <div class="post-user">
                         <img src="../assets/default-profile-image.jpg" alt="User Icon" class="user-img" id="user-image">
-                        <span class="post-user" id="post-user"></span>
-                        <span class="post-date" id="post-date"></span>
+                        <span class="post-user" id="post-user">닉네임</span>
+                        <span class="post-date" id="post-date">2025-02-02</span>
                     </div>
                     <div class="post-buttons">
-                        <button class="edit-post-button" id="edit-post-button">수정</button>
-                        <button class="delete-post-button" id="delete-post-button">삭제</button>
+                        <button class="edit-post-button" id="edit-post-button">
+                            <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                        </button>
+                        <button class="delete-post-button" id="delete-post-button">
+                            <i class="fa-solid fa-trash delete-icon"></i>
+                        </button>
                     </div>
                 </div>
             </header>
             <hr />
 
             <section class="post-content">
-                <!-- <div class="img-placeholder"></div> -->
-                <img id="post-image" alt="Post Image" class="post-image" />
-                <p id="post-content" class="post-content"></p>
+                <img id="post-image" alt="Post Image" class="post-image" src="#" />
+                <p id="post-content" class="post-content">안녕하세요</p>
             </section>
 
             <footer class="post-footer">
                 <div class="post-stats">
-                    <div class="stat-item" id="like-button"><span>좋아요</span></div>
-                    <div class="stat-item" id="view-count"><span>조회수</span></div>
-                    <div class="stat-item" id="comment-count"><span>댓글</span></div>
+                    <div class="stat-item" id="like-button">
+                        <i class="fa-regular fa-thumbs-up like-icon icon"></i>
+                        <span>좋아요</span>
+                    </div>
+                    <div class="stat-item dislike-button">
+                        <i class="fa-regular fa-thumbs-down dislike-icon icon"></i>
+                        <span>싫어요</span>
+                    </div>
+                    <div class="stat-item" id="view-count">
+                        <i class="fa-solid fa-binoculars view-icon icon"></i>
+                        <span>조회수</span>
+                    </div>
+                    <div class="stat-item" id="comment-count">
+                        <i class="fa-solid fa-comments comment-icon icon"></i>
+                        <span>댓글</span>
+                    </div>
                 </div>
             </footer>
         </article>
@@ -63,7 +82,19 @@
         </section>
 
         <section class="comment-list" id="comment-list">
-            <!-- 동적으로 댓글 렌더링 -->
+            <!-- Dynamic Comment Loading -->
+            <div class="comment-header">
+                <div class="comment-user">
+                    <img src="../assets/default-profile-image.jpg" alt="User Icon" class="user-img">
+                    <span class="comment-user">닉네임</span>
+                    <span class="comment-date">2025-02-02</span>
+                </div>
+                <div class="comment-buttons" style="display: ${isUser ? 'flex' : 'none'};">
+                    <button class="edit-comment-button"><i class="fa-solid fa-pen-to-square edit-icon"></i></button>
+                    <button class="delete-comment-button"><i class="fa-solid fa-trash delete-icon"></i></button>
+                </div>
+            </div>
+            <p class="comment-content">반갑습니다.</p>
         </section>
     </div>
 
