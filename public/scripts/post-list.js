@@ -99,4 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   postList();
+
+  const arrowUp = document.querySelector('.arrow-up');
+  const card = document.querySelector('.post-item');
+  const cardHeight = card.offsetHeight;
+  arrowUp.style.opacity = 0;
+  document.addEventListener('scroll', () => {
+    if (window.scrollY > cardHeight * 3) {
+      arrowUp.style.opacity = 1;
+    } else {
+      arrowUp.style.opacity = 0;
+    }
+  });
 });
