@@ -39,10 +39,10 @@ const renderPosts = (postsData) => {
       postItem.innerHTML = `
         <h3 class="post-title">${title}</h3>
         <div class="post-stats">
-          <span><i class="fa-solid fa-binoculars view-icon"> ${formatNumber(viewCount)}</span>
+          <span><i class="fa-solid fa-binoculars view-icon"></i> ${formatNumber(viewCount)}</span>
           <span><i class="fa-solid fa-comments comment-icon"></i> ${formatNumber(commentCount)}</span>
           <span><i class="fa-solid fa-thumbs-up like-icon"></i> ${formatNumber(likeCount)}</span>
-          <span><i class="fa-solid fa-thumbs-down"></i> ${formatNumber(dislikeCount)}</span>
+          <span><i class="fa-solid fa-thumbs-down dislike-icon"></i> ${formatNumber(dislikeCount)}</span>
           <p class="post-date">${formatDateTime(createdAt)}</p>
         </div>
         <hr />
