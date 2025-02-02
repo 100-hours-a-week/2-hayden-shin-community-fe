@@ -2,6 +2,7 @@
   /* Colour */
   --color-black: black;
   --color-white: white;
+  --color-red: red;
   --color-bg: #f6f6f6;
   --color-grey: ; #efefef;
   --color-text: #22243b;
@@ -34,6 +35,26 @@ body {
   font-family: Arial, sans-serif;
   min-height: 100vh;
   background: linear-gradient(90deg, rgba(242,243,245,1) 0%, rgba(209,213,220,1) 100%);
+}
+
+a {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 부모 요소의 텍스트 색상 상속 */
+}
+
+button {
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 350;
 }
 
 .container {
@@ -131,18 +152,12 @@ body {
   display:block;
 }
 
-/* 버튼 */
-button {
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
+/* Buttons */
 .login-button, .submit-button {
   width: 100%;
   padding: 10px;
   color: white;
-  background-color: hsl(250, 80%, 67%);
+  background: var(--color-gradient);
   border: none;
 }
 
@@ -151,24 +166,19 @@ button {
 } */
 
 .login-button:disabled, submit-button:disabled {
-  background-color: #ACA0EB;
+  background: var(--color-gradient);
+  filter: brightness(-100%)
 }
 
 .complete-button {
   display: block;
   margin: 0 auto;
-
   margin-top: 10%;
   padding: 10px;
   color: white;
-  background-color: #8888ff;
+  background: var(--color-gradient);
   border: none;
   border-radius: 2em;
-}
-
-a {
-  text-decoration: none; /* 밑줄 제거 */
-  color: inherit; /* 부모 요소의 텍스트 색상 상속 */
 }
 
 .link, #registerBtn {
@@ -183,16 +193,22 @@ a {
   color: #333;
 }
 
-/* 인풋 + 폼 */
+/* Forms */
 .form-container {
+  display: block;
+  margin-top: 2rem;
+  padding: 1.5em var(--side-padding);
+  border-radius: 4px;
+  background: white;
   text-align: center;
   width: 300px;
   font-size: 12px;
+  box-shadow: var(--shadow);
 }
 
 .form-title {
-  font-size: 20px;
-  font-weight: 500;
+  font-size: var(--font-medium);
+  font-weight: 700;
   text-align: center;
   margin-bottom: 30px;
 }
@@ -203,8 +219,8 @@ a {
 }
 
 .form-group label {
-  font-size: 12px;
-  color: #333;
+  font-size: var(--font-small);
+  color: var(--color-text);
   display: block;
   margin-bottom: 5px;
 }
@@ -212,18 +228,14 @@ a {
 .form-group input, .form-group textarea {
   width: 100%;
   padding: 8px;
-  font-size: 12px;
-  border: 1px solid #ddd;
+  font-size: var(--font-small);
+  border: 1px solid var(--color-grey);
   border-radius: 4px;
-}
-
-textarea {
-  resize: vertical;
 }
 
 .helper-text {
   font-size: 10px;
-  color: red;
+  color: var(--color-red);
   margin-top: 5px;
   text-align: left;
   display: none; /* 기본적으로 숨김 */
@@ -232,56 +244,50 @@ textarea {
 input:focus + .helper-text,
 textarea:focus + .helper-text {
   display: block; /* 입력 중일 때 표시 */
-  color: red;
+  color: var(--color-red);
 }
 
-/* 모달창 */
-/* #modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 101;
-  display: none;
-} */
-
-/* 모달창 */
+/* Modals */
 .modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* 50% 불투명 */
-  z-index: 100;
-  justify-content: center; /* 가로 중앙 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.modal-overlay.show {
+  display: flex;
 }
 
 .modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-color: var(--color-white);
-  padding: 30px;
+  padding: var(--side-padding);
   border-radius: 8px;
   text-align: center;
-  width: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 모달 그림자 */
+  max-width: 15rem;
+  max-height: 11rem;
+  box-shadow: var(--shadow);
 }
 
 #modal-message {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 10px;
+  font-size: var(--font-mediium);
+  color: var(--color-text);
   font-weight: 600;
+  margin: 0.5em;
 }
 
 #modal-sub-message {
-  font-size: 10px;
-  color: #888;
-  margin-bottom: 20px;
+  font-size: var(--font-small);
+  color: var(--color-text);
+  filter: brightness(100%);
+  margin: 0 1em 2em 1em;
 }
 
 .modal-buttons {
@@ -298,24 +304,31 @@ textarea:focus + .helper-text {
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
+  transition: all 250ms ease;
 }
 
 .modal-cancel-button {
-  background-color: #333;
+  background-color: var(--color-black);
   color: var(--color-white);
 }
 
 .modal-confirm-button {
-  background-color: var(--color-accent);
+  background: var(--color-gradient);
   color: var(--color-white);
 }
 
-label {
-  font-size: 12px;
-  font-weight: 350;
+.modal-cancel-button:hover {
+  background: var(--color-black);
+  filter: brightness(50%);
+  color: var(--color-white);
 }
 
-/* 토스트 메세지 */
+.modal-confirm-button:hover {
+  background: var(--color-gradient);
+  filter: brightness(50%);
+}
+
+/* Toast messages */
 .toast-message {
   position: fixed;
   bottom: 20px;
