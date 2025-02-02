@@ -78,11 +78,11 @@ async function renderPost(postData) {
   document.getElementById('like-button').innerHTML =
     `<i class="fa-regular fa-thumbs-up like-icon icon"></i> <span>${formatNumber(postData.likeCount)}</span><span>좋아요</span>`;
   document.getElementById('dislike-button').innerHTML =
-    `<i class="fa-regular fa-thumbs-down dislike-icon icon"></i> <span>${formatNumber(postData.dislikeCount)}</span><span>싫어요</span>`;
+    `<i class="fa-regular fa-thumbs-down dislike-icon"></i> <span>${formatNumber(postData.dislikeCount)}</span><span>싫어요</span>`;
   document.getElementById('view-count').innerHTML =
     `<i class="fa-solid fa-binoculars view-icon icon"></i> <span>${formatNumber(postData.viewCount)}</span><span>조회수</span>`;
   document.getElementById('comment-count').innerHTML =
-    `<i class="fa-solid fa-comments comment-icon icon"></i> <span>${formatNumber(postData.commentCount)}</span><span>댓글</span>`;
+    `<i class="fa-solid fa-comments comment-icon"></i> <span>${formatNumber(postData.commentCount)}</span><span>댓글</span>`;
 }
 
 // 댓글 렌더링
@@ -283,7 +283,7 @@ async function addDislikes(postId) {
       const result = await response.json();
       dislikeIcon.classList.add('dislike-icon--disliked');
       document.getElementById('dislike-button').innerHTML =
-        `<i class="fa-solid fa-thumbs-down dislike-icon icon dislike-icon--disliked"></i> <span>${formatNumber(result.data.dislikeCount)}</span><span>좋아요</span>`;
+        `<i class="fa-solid fa-thumbs-down dislike-icon icon dislike-icon--disliked"></i> <span>${formatNumber(result.data.dislikeCount)}</span><span>싫어요</span>`;
       showToast('싫어요 성공');
     } else {
       handleErrors(response.status, '/post-list');
