@@ -282,7 +282,7 @@ async function addDislikes(postId) {
     if (response.ok) {
       const result = await response.json();
       dislikeIcon.classList.add('dislike-icon--disliked');
-      document.selectQuery('.dislike-button').innerHTML =
+      document.querySelector('.dislike-button').innerHTML =
         `<i class="fa-solid fa-thumbs-up like-icon icon dislike-icon--disliked"></i> <span>${formatNumber(result.data.dislikeCount)}</span><span>좋아요</span>`;
       showToast('싫어요 성공');
     } else {
