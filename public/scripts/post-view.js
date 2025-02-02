@@ -266,7 +266,7 @@ async function fetchDislikeStatus(postId, dislikeIcon) {
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('좋아요 상태 조회 중 오류:', error);
+    console.error('싫어요 상태 조회 중 오류:', error);
   }
 }
 
@@ -349,8 +349,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         await addLikes(postId);
       }
     });
-    await fetchDislikeStatus(postId, dislikeButton);
-    dislikeButton.addEventListener('click', async () => {
+    await fetchDislikeStatus(postId, dislikeIcon);
+    dislikeIcon.addEventListener('click', async () => {
       if (dislikeIcon.classList.contains('dislike-icon--disliked')) {
         await removeDislikes(postId);
       } else {
