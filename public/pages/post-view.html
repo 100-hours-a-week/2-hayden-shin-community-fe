@@ -34,12 +34,12 @@
 
         <article class="post-detail">
             <header class="post-header">
-                <h2 class="post-title" id="post-title">첫 번 째 게시글</h2>
+                <h2 class="post-title" id="post-title"></h2>
                 <div class="post-meta">
                     <div class="post-user">
                         <img src="../assets/default-profile-image.jpg" alt="User Icon" class="user-img" id="user-image">
-                        <span class="post-user" id="post-user">닉네임</span>
-                        <span class="post-date" id="post-date">2025-02-02</span>
+                        <span class="post-user" id="post-user"></span>
+                        <span class="post-date" id="post-date"></span>
                     </div>
                     <div class="post-buttons">
                         <button class="edit-post-button" id="edit-post-button">
@@ -55,26 +55,22 @@
 
             <section class="post-content">
                 <img id="post-image" alt="Post Image" class="post-image" src="#" />
-                <p id="post-content" class="post-content">안녕하세요</p>
+                <p id="post-content" class="post-content"></p>
             </section>
 
             <footer class="post-footer">
                 <div class="post-stats">
                     <div class="stat-item" id="like-button">
-                        <i class="fa-regular fa-thumbs-up like-icon icon"></i>
-                        <span>좋아요</span>
+                        <i class="fa-regular fa-thumbs-up like-icon icon"></i> <span></span><span>좋아요</span>
                     </div>
                     <div class="stat-item dislike-button">
-                        <i class="fa-regular fa-thumbs-down dislike-icon icon"></i>
-                        <span>싫어요</span>
+                        <i class="fa-regular fa-thumbs-down dislike-icon icon"></i> <span></span><span>싫어요</span>
                     </div>
                     <div class="stat-item" id="view-count">
-                        <i class="fa-solid fa-binoculars view-icon icon"></i>
-                        <span>조회수</span>
+                        <i class="fa-solid fa-binoculars view-icon icon"></i> <span></span><span>조회수</span>
                     </div>
                     <div class="stat-item" id="comment-count">
-                        <i class="fa-solid fa-comments comment-icon icon"></i>
-                        <span>댓글</span>
+                        <i class="fa-solid fa-comments comment-icon icon"></i> <span></span><span>댓글</span>
                     </div>
                 </div>
             </footer>
@@ -89,18 +85,6 @@
 
         <section class="comment-list" id="comment-list">
             <!-- Dynamic Comment Loading -->
-            <div class="comment-header">
-                <div class="comment-user">
-                    <img src="../assets/default-profile-image.jpg" alt="User Icon" class="user-img">
-                    <span class="comment-user">닉네임</span>
-                    <span class="comment-date">2025-02-02</span>
-                </div>
-                <div class="comment-buttons" style="display: ${isUser ? 'flex' : 'none'};">
-                    <button class="edit-comment-button"><i class="fa-solid fa-pen-to-square edit-icon"></i></button>
-                    <button class="delete-comment-button"><i class="fa-solid fa-trash delete-icon"></i></button>
-                </div>
-            </div>
-            <p class="comment-content">반갑습니다.</p>
         </section>
     </div>
 
