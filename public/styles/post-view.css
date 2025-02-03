@@ -95,11 +95,11 @@ hr {
 /* Icons */
 .like-icon, .dislike-icon, .comment-icon, .view-icon {
   margin-bottom: 0.5rem;
-  font-size: 1rem; 
+  font-size: 1.5rem; 
 }
 
 .edit-icon, .delete-icon, .like-icon, .dislike-icon {
-  font-size: 1rem; 
+  font-size: 1.5rem; 
   background: var(--color-gradient);
   background-clip: text;
   -webkit-background-clip: text;
