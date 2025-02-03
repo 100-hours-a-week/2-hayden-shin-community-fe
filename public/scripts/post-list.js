@@ -1,5 +1,9 @@
 import { BASE_URL, CDN_URL } from '../config.js';
-import { formatDateTime, formatNumber } from '../../utils/format.js';
+import {
+  formatDateTime,
+  formatNumber,
+  formatRelativeTime,
+} from '../../utils/format.js';
 import { showToastAndRedirect } from './common.js';
 
 // 게시글 리스트 새로고침
@@ -25,6 +29,7 @@ const renderPosts = (postsData) => {
       id,
       title,
       createdAt,
+      updatedAt,
       viewCount = 0,
       commentCount = 0,
       likeCount = 0,
@@ -36,6 +41,10 @@ const renderPosts = (postsData) => {
       postItem.classList.add('post-item');
       postItem.dataset.id = id;
 
+      const timeDisplay = updatedAt
+        ? `${formatDateTime(updatedAt)} 수정됨`
+        : formatRelativeTime(createdAt);
+
       postItem.innerHTML = `
         <h3 class="post-title">${title}</h3>
         <div class="post-stats">
@@ -43,7 +52,7 @@ const renderPosts = (postsData) => {
           <span><i class="fa-solid fa-comments comment-icon"></i> ${formatNumber(commentCount)}</span>
           <span><i class="fa-solid fa-thumbs-up like-icon"></i> ${formatNumber(likeCount)}</span>
           <span><i class="fa-solid fa-thumbs-down dislike-icon"></i> ${formatNumber(dislikeCount)}</span>
-          <p class="post-date">${formatDateTime(createdAt)}</p>
+          <p class="post-date">${timeDisplay}</p>
         </div>
         <hr />
         <div class="post-user">

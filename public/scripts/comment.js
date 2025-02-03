@@ -1,6 +1,6 @@
 import { BASE_URL, CDN_URL } from '../config.js';
 import { showModal, showToast } from './common.js';
-import { formatDateTime } from '../../utils/format.js';
+import { formatDateTime, formatRelativeTime } from '../../utils/format.js';
 
 export const updateCommentCount = (postId) => {
   const commentList = document.getElementById(`comment-list`);
@@ -53,12 +53,16 @@ const renderComment = (commentData) => {
   commentElement.classList.add('comment');
   commentElement.setAttribute('data-comment-id', commentData.id);
 
+  const timeDisplay = commentData.updatedAt
+    ? `${formatDateTime(commentData.updatedAt)} 수정됨`
+    : formatDateTime(commentData.createdAt);
+
   commentElement.innerHTML = `
     <div class="comment-header">
       <div class="comment-user">
         <img src="${CDN_URL}${commentData.url || '/default-profile-image.jpg'}" alt="User Icon" class="user-img">
         <span class="comment-user">${commentData.username}</span>
-        <span class="comment-date">${formatDateTime(commentData.createdAt)}</span>
+        <span class="comment-date">${timeDisplay}</span>
       </div>
       <div class="comment-buttons">
         <button class="edit-comment-button"><i class="fa-solid fa-pen-to-square edit-icon"></i></button>
