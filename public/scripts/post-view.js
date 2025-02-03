@@ -181,7 +181,7 @@ function handleErrors(status, redirectPath) {
       alert('서버 내부 오류가 발생했습니다.');
       break;
     default:
-      alert('알 수 없는 오류가 발생했습니다.');
+      showToast(`${message}: 알 수 없는 오류가 발생했습니다.`);
   }
 }
 

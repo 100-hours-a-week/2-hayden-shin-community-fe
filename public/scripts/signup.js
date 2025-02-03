@@ -150,7 +150,7 @@ async function signup(email, password, username, url = null) {
       const result = await response.json();
       alert('회원가입 실패: ' + result.message);
     } else {
-      alert('알 수 없는 오류가 발생했습니다.');
+      showToast(`${message}: 알 수 없는 오류가 발생했습니다.`);
     }
   } catch (error) {
     console.error('회원가입 요청 실패:', error);
