@@ -4,7 +4,6 @@ import {
   formatNumber,
   formatRelativeTime,
 } from '../../utils/format.js';
-import { showToastAndRedirect } from './common.js';
 
 // Refresh post list
 export const refreshPostList = async () => {
@@ -102,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const createPostButton = document.getElementById('create-post-button');
   if (createPostButton) {
     createPostButton.addEventListener('click', () => {
-      showToastAndRedirect('Moving to post creation page', '/post-create');
+      window.location.href = '/post-create';
     });
   }
 

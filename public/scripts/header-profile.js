@@ -1,4 +1,5 @@
 import { BASE_URL, CDN_URL } from '../config.js';
+import { showToastAndRedirect } from './common.js';
 
 async function fetchUserProfile() {
   try {
@@ -9,6 +10,7 @@ async function fetchUserProfile() {
 
     if (!response.ok) {
       console.error('❌ Failed to fetch user profile');
+      showToastAndRedirect('Need to log in first!', '/login');
     }
 
     const result = await response.json();

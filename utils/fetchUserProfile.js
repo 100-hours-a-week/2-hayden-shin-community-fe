@@ -1,4 +1,5 @@
 import { BASE_URL } from '../config.js';
+import { showToast } from '../public/scripts/common.js';
 
 export async function fetchUserProfile() {
   try {
@@ -11,7 +12,8 @@ export async function fetchUserProfile() {
       const result = await response.json();
       return result.data;
     } else {
-      alert('오류 발생');
+      showToast('Need to log in first!');
+      window.location.href = '/login';
     }
   } catch (error) {
     console.log(error);
