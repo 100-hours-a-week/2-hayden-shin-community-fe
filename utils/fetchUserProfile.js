@@ -1,5 +1,5 @@
 import { BASE_URL } from '../config.js';
-import { showToast } from '../public/scripts/common.js';
+import { showToast } from '../scripts/common.js';
 
 export async function fetchUserProfile() {
   try {
