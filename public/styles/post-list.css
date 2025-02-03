@@ -49,10 +49,13 @@ hr {
   border-radius: 8px;
   border: 1px solid #ddd;
   box-shadow: var(--shadow);
+  transition: all 350ms ease;
 }
 
 .post-item:hover {
-  transition: 350ms;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
 }
 
 .post {
