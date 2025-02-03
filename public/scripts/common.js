@@ -25,7 +25,7 @@ export const toggleButtonState = (
   }
 };
 
-// 토스트 메세지
+// Toast message
 export const showToast = (message) => {
   const toast = document.createElement('div');
   toast.className = 'toast-message';
@@ -64,24 +64,31 @@ export const displayStoredToast = () => {
   }
 };
 
-// 모달
-
-const modal = document.getElementById('modal');
-const modalMessage = document.getElementById('modal-message');
-const modalCancelButton = document.getElementById('modal-cancel-button');
-const modalConfirmButton = document.getElementById('modal-confirm-button');
-
+// Modal
+const modal = document.querySelector('.modal-overlay');
 export const showModal = (message, onConfirm) => {
+  const modalMessage = document.getElementById('modal-message');
+  const modalCancelButton = document.getElementById('modal-cancel-button');
+  const modalConfirmButton = document.getElementById('modal-confirm-button');
   modalMessage.textContent = message;
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
 
-  modalConfirmButton.onclick = () => {
+  modal.classList.add('show');
+
+  const confirmHandler = () => {
     onConfirm();
-    closeModal();
+    modal.classList.remove('show');
+    modalConfirmButton.removeEventListener('click', confirmHandler);
+    modalCancelButton.removeEventListener('click', cancelHandler);
   };
 
-  modalCancelButton.onclick = closeModal;
+  const cancelHandler = () => {
+    modal.classList.remove('show');
+    modalConfirmButton.removeEventListener('click', confirmHandler);
+    modalCancelButton.removeEventListener('click', cancelHandler);
+  };
+
+  modalConfirmButton.addEventListener('click', confirmHandler);
+  modalCancelButton.addEventListener('click', cancelHandler);
 };
 
 export const closeModal = () => {

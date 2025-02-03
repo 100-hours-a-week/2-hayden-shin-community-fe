@@ -144,8 +144,8 @@ async function renderComments(comments) {
           </span>
         </div>
         <div class="comment-buttons" style="display: ${isUser ? 'flex' : 'none'};">
-          <button class="edit-comment-button"><i class="fa-solid fa-pen-to-square edit-icon"></i></button>
-          <button class="delete-comment-button"><i class="fa-solid fa-trash delete-icon"></i></button>
+          <button class="edit-comment-button"><i class="fa-solid fa-pen-to-square edit-icon comment-edit-icon"></i></button>
+          <button class="delete-comment-button"><i class="fa-solid fa-trash delete-icon comment-delete-icon"></i></button>
         </div>
       </div>
       <p class="comment-content">${comment.content}</p>
@@ -166,7 +166,7 @@ async function deletePost(postId) {
     });
 
     if (response.ok) {
-      alert('게시글이 성공적으로 삭제되었습니다.');
+      alert('게시글 삭제 완료');
       window.location.href = '/post-list';
     } else {
       handleErrors(response.status, '/post-list');
@@ -375,6 +375,7 @@ async function removeDislikes(postId) {
     console.error('싫어요 취소 중 오류:', error);
   }
 }
+
 editPostButton.addEventListener('click', () => {
   const postId = new URLSearchParams(window.location.search).get('id');
   if (postId) window.location.href = `/post-edit?id=${postId}`;
@@ -383,6 +384,16 @@ editPostButton.addEventListener('click', () => {
 deletePostButton.addEventListener('click', () => {
   const postId = new URLSearchParams(window.location.search).get('id');
   if (postId) {
+    showModal('정말 게시글을 삭제하시겠습니까?', () => {
+      deletePost(postId);
+    });
+  }
+});
+
+document.querySelector('.post-delete-icon').addEventListener('click', () => {
+  const postId = new URLSearchParams(window.location.search).get('id');
+  if (postId) {
+    console.log('modal clicked');
     showModal('정말 게시글을 삭제하시겠습니까?', () => {
       deletePost(postId);
     });

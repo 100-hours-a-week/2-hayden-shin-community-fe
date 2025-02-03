@@ -65,8 +65,8 @@ const renderComment = (commentData) => {
         <span class="comment-date">${timeDisplay}</span>
       </div>
       <div class="comment-buttons">
-        <button class="edit-comment-button"><i class="fa-solid fa-pen-to-square edit-icon"></i></button>
-        <button class="delete-comment-button"><i class="fa-solid fa-trash delete-icon"></i></button>
+        <button class="edit-comment-button"><i class="fa-solid fa-pen-to-square edit-icon comment-edit-icon"></i></button>
+        <button class="delete-comment-button"><i class="fa-solid fa-trash delete-icon comment-delete-icon"></i></button>
       </div>
     </div>
     <p class="comment-content">${commentData.content}</p>
@@ -194,8 +194,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   commentList.addEventListener('click', (event) => {
-    if (event.target.classList.contains('edit-comment-button')) {
-      const commentElement = event.target.closest('.comment');
+    const editButton = event.target.closest('.edit-comment-button');
+    const editIcon = event.target.closest('.comment-edit-icon');
+
+    const deleteButton = event.target.closest('.delete-comment-button');
+    const deleteIcon = event.target.closest('.comment-delete-icon');
+
+    if (editButton || editIcon) {
+      const commentElement = (editButton || editIcon).closest('.comment');
       const commentId = commentElement.dataset.commentId;
       const existingContent = commentElement
         .querySelector('.comment-content')
@@ -207,9 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
       isEditMode = true;
     }
 
-    if (event.target.classList.contains('delete-comment-button')) {
-      const commentElement = event.target.closest('.comment');
+    if (deleteButton || deleteIcon) {
+      const commentElement = (deleteButton || deleteIcon).closest('.comment');
       const commentId = commentElement.dataset.commentId;
+      const postId = new URLSearchParams(window.location.search).get('id');
+
       showModal('정말 댓글을 삭제하시겠습니까?', () => {
         deleteComment(postId, commentId);
       });
