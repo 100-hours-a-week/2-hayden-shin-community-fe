@@ -170,7 +170,7 @@ async function deletePost(postId) {
 function handleErrors(status, redirectPath) {
   switch (status) {
     case 401:
-      alert('인증되지 않은 사용자입니다. 다시 로그인해주세요.');
+      showToast('인증되지 않은 사용자입니다. 로그인 페이지로 이동합니다.');
       window.location.href = '/login';
       break;
     case 404:

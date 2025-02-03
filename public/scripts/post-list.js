@@ -84,7 +84,7 @@ async function postList() {
       const result = await response.json();
       renderPosts(result.data);
     } else if (response.status === 401) {
-      alert('Unauthorized user. Please login again.');
+      showToast('인증되지 않은 사용자입니다. 로그인 페이지로 이동합니다.');
       window.location.href = '/login';
     } else if (response.status === 500) {
       alert('Internal server error occurred. Please try again later.');

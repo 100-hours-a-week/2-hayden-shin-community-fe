@@ -137,26 +137,26 @@ const deleteComment = async (postId, commentId) => {
 const handleError = (status, message) => {
   switch (status) {
     case 400:
-      alert('잘못된 요청입니다. 내용을 확인해주세요.');
+      showToast('잘못된 요청입니다. 내용을 확인해주세요.');
       break;
     case 401:
-      alert('인증되지 않은 사용자입니다. 로그인 페이지로 이동합니다.');
+      showToast('인증되지 않은 사용자입니다. 로그인 페이지로 이동합니다.');
       window.location.href = '/login';
       break;
     case 403:
-      alert('권한이 없습니다.');
+      showToast('권한이 없습니다.');
       break;
     case 404:
-      alert('요청한 리소스를 찾을 수 없습니다.');
+      showToast('요청한 리소스를 찾을 수 없습니다.');
       break;
     case 429:
-      alert('요청이 너무 빈번합니다. 잠시 후 다시 시도해주세요.');
+      showToast('요청이 너무 빈번합니다. 잠시 후 다시 시도해주세요.');
       break;
     case 500:
-      alert('서버 내부 오류가 발생했습니다.');
+      showToast('서버 내부 오류가 발생했습니다.');
       break;
     default:
-      alert(`${message}: 알 수 없는 오류가 발생했습니다.`);
+      showToast(`${message}: 알 수 없는 오류가 발생했습니다.`);
   }
 };
 
