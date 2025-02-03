@@ -11,18 +11,17 @@ import { fetchUserProfile } from '../../utils/fetchUserProfile.js';
 const editPostButton = document.getElementById('edit-post-button');
 const deletePostButton = document.getElementById('delete-post-button');
 const likeButton = document.getElementById('like-button');
-const dislikeButton = document.getElementById('dislike-button'); // Add dislike button reference
+const dislikeButton = document.getElementById('dislike-button');
 
 // Add performance measurement utility
 const measureTime = (label) => {
   const start = performance.now();
   return () => {
     const duration = performance.now() - start;
-    console.log(`⏱️ ${label} took ${duration.toFixed(2)}ms`);
   };
 };
 
-// 버튼 상태 토글 함수
+// Toggle button state function
 const toggleButtonState = (button, enabled) => {
   button.disabled = !enabled;
   button.style.background = enabled
@@ -30,9 +29,8 @@ const toggleButtonState = (button, enabled) => {
     : 'var(--color-gradient-transparent)';
 };
 
-// 게시글 조회
+// View post
 async function viewPost(postId) {
-  console.log(`📥 Fetching post with ID: ${postId}`);
   const endTimer = measureTime('viewPost');
   try {
     const response = await fetch(`${BASE_URL}/posts/${postId}`, {
@@ -40,27 +38,23 @@ async function viewPost(postId) {
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     });
-    console.log(`📊 Response status: ${response.status}`);
 
     if (response.ok) {
       const result = await response.json();
-      console.log('📦 Received post data:', result.data);
       await renderPost(result.data.post);
       await renderComments(result.data.comments);
     } else {
-      console.warn(`⚠️ Error response: ${response.status}`);
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('❌ Post fetch error:', error);
+    console.error('🔥 Failed to fetch post:', error);
     alert('서버와의 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
   }
   endTimer();
 }
 
-// 게시글 렌더링
+// Render post
 async function renderPost(postData) {
-  console.log('🎨 Rendering post:', postData);
   const endTimer = measureTime('renderPost');
 
   const postTitle = document.getElementById('post-title');
@@ -71,9 +65,7 @@ async function renderPost(postData) {
   const image = document.getElementById('post-image');
 
   const currentUser = await fetchUserProfile();
-  console.log('👤 Current user:', currentUser);
   const isUser = postData.userId == currentUser.id;
-  console.log(`🔑 Is owner: ${isUser}`);
 
   const editPostButton = document.getElementById('edit-post-button');
   const deletePostButton = document.getElementById('delete-post-button');
@@ -109,13 +101,11 @@ async function renderPost(postData) {
   document.getElementById('comment-count').innerHTML =
     `<i class="fa-solid fa-comments comment-icon"></i> <span>${formatNumber(postData.commentCount)}</span><span>댓글</span>`;
 
-  console.log('🖼️ Post render complete');
   endTimer();
 }
 
-// 댓글 렌더링
+// Render comments
 async function renderComments(comments) {
-  console.log(`💬 Rendering ${comments.length} comments`);
   const endTimer = measureTime('renderComments');
 
   const commentList = document.getElementById('comment-list');
@@ -124,7 +114,6 @@ async function renderComments(comments) {
   commentList.innerHTML = '';
 
   comments.forEach(async (comment) => {
-    console.log(`📝 Rendering comment ID: ${comment.id}`, comment);
     const commentElement = document.createElement('div');
     commentElement.classList.add('comment');
     commentElement.setAttribute('data-comment-id', comment.id);
@@ -156,7 +145,7 @@ async function renderComments(comments) {
   endTimer();
 }
 
-// 게시글 삭제
+// Delete post
 async function deletePost(postId) {
   try {
     const response = await fetch(`${BASE_URL}/posts/${postId}`, {
@@ -172,12 +161,12 @@ async function deletePost(postId) {
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('게시글 삭제 중 오류:', error);
+    console.error('❌ Error deleting post:', error);
     alert('서버와의 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
   }
 }
 
-// 오류 처리
+// Handle errors
 function handleErrors(status, redirectPath) {
   switch (status) {
     case 401:
@@ -196,9 +185,8 @@ function handleErrors(status, redirectPath) {
   }
 }
 
-// 좋아요 상태 초기화 함수
+// Initialize like status
 async function fetchLikeStatus(postId, likeButton) {
-  console.log(`👍 Fetching like status for post: ${postId}`);
   const endTimer = measureTime('fetchLikeStatus');
 
   const likeIcon = document.querySelector('.like-icon');
@@ -211,9 +199,7 @@ async function fetchLikeStatus(postId, likeButton) {
 
     if (response.ok) {
       const result = await response.json();
-      console.log('📦 Received like status:', result.data);
       if (result.data.isLiked) {
-        console.log(result.data.isLiked);
         likeButton.classList.add('liked');
         likeIcon.classList.add('like-icon--liked');
         likeIcon.classList.remove('fa-regular');
@@ -226,16 +212,15 @@ async function fetchLikeStatus(postId, likeButton) {
       }
       return result.data.isLiked;
     } else {
-      console.warn(`⚠️ Error response: ${response.status}`);
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('❌ Like status fetch error:', error);
+    console.error('❌ Error fetching like status:', error);
   }
   endTimer();
 }
 
-// 좋아요 추가 함수
+// Add like
 async function addLikes(postId) {
   try {
     const response = await fetch(`${BASE_URL}/posts/${postId}/likes`, {
@@ -254,11 +239,11 @@ async function addLikes(postId) {
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('좋아요 추가 중 오류:', error);
+    console.error('❌ Error adding like:', error);
   }
 }
 
-// 좋아요 제거 함수
+// Remove like
 async function removeLikes(postId) {
   try {
     const response = await fetch(`${BASE_URL}/posts/${postId}/likes`, {
@@ -277,17 +262,16 @@ async function removeLikes(postId) {
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('좋아요 취소 중 오류:', error);
+    console.error('❌ Error removing like:', error);
   }
 }
 
-// 싫어요 상태 초기화 함수
+// Initialize dislike status
 async function fetchDislikeStatus(postId) {
   try {
-    console.log('Fetching dislike status...'); // Add debug logging
     const dislikeIcon = document.querySelector('.dislike-icon');
     if (!dislikeIcon) {
-      console.error('Dislike icon element not found'); // Add error logging
+      console.error('❌ Dislike icon element not found');
       return;
     }
 
@@ -299,7 +283,6 @@ async function fetchDislikeStatus(postId) {
 
     if (response.ok) {
       const result = await response.json();
-      console.log('Dislike status result:', result); // Add debug logging
       if (result.data.isDisliked) {
         dislikeIcon.classList.add('dislike-icon--disliked');
         dislikeIcon.classList.remove('fa-regular');
@@ -314,13 +297,12 @@ async function fetchDislikeStatus(postId) {
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('싫어요 상태 조회 중 오류:', error);
+    console.error('❌ Error fetching dislike status:', error);
   }
 }
 
-// 싫어요 추가 함수
+// Add dislike
 async function addDislikes(postId) {
-  console.log('👎 Adding dislike');
   const dislikeButton = document.getElementById('dislike-button');
   const dislikeIcon = dislikeButton.querySelector('.dislike-icon');
 
@@ -341,17 +323,16 @@ async function addDislikes(postId) {
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('싫어요 추가 중 오류:', error);
+    console.error('❌ Error adding dislike:', error);
   }
 }
 
-// 싫어요 제거 함수
+// Remove dislike
 async function removeDislikes(postId) {
   try {
-    console.log('Removing dislike...'); // Add debug logging
     const dislikeIcon = document.querySelector('.dislike-icon');
     if (!dislikeIcon) {
-      console.error('Dislike icon element not found'); // Add error logging
+      console.error('❌ Dislike icon element not found');
       return;
     }
 
@@ -363,7 +344,6 @@ async function removeDislikes(postId) {
 
     if (response.ok) {
       const result = await response.json();
-      console.log('Remove dislike result:', result); // Add debug logging
       dislikeIcon.classList.remove('dislike-icon--disliked');
       document.getElementById('dislike-button').innerHTML =
         `<i class="fa-regular fa-thumbs-down dislike-icon icon"></i> <span>${formatNumber(result.data.dislikeCount)}</span><span>싫어요</span>`;
@@ -372,7 +352,7 @@ async function removeDislikes(postId) {
       handleErrors(response.status, '/post-list');
     }
   } catch (error) {
-    console.error('싫어요 취소 중 오류:', error);
+    console.error('❌ Error removing dislike:', error);
   }
 }
 
@@ -393,7 +373,6 @@ deletePostButton.addEventListener('click', () => {
 document.querySelector('.post-delete-icon').addEventListener('click', () => {
   const postId = new URLSearchParams(window.location.search).get('id');
   if (postId) {
-    console.log('modal clicked');
     showModal('정말 게시글을 삭제하시겠습니까?', () => {
       deletePost(postId);
     });
@@ -401,14 +380,12 @@ document.querySelector('.post-delete-icon').addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('🚀 Page loaded, initializing...');
   const endTimer = measureTime('pageInitialization');
 
   const postId = new URLSearchParams(window.location.search).get('id');
-  console.log(`📋 Post ID from URL: ${postId}`);
 
   if (!postId) {
-    console.warn('⚠️ No post ID found in URL');
+    console.error('❌ No post ID found in URL');
     alert('Post ID를 찾을 수 없습니다.');
     window.location.href = '/post-list';
     return;
@@ -418,13 +395,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     await viewPost(postId);
     await fetchLikeStatus(postId, likeButton);
     likeButton.addEventListener('click', async () => {
-      console.log('👆 Like button clicked');
       const endTimer = measureTime('likeOperation');
       if (likeButton.classList.contains('liked')) {
-        console.log('Removing like');
         await removeLikes(postId);
       } else {
-        console.log('Adding like');
         await addLikes(postId);
       }
       endTimer();
@@ -433,7 +407,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dislikeIcon = document.querySelector('.dislike-icon');
     await fetchDislikeStatus(postId);
     dislikeButton.addEventListener('click', async () => {
-      console.log('Dislike icon clicked'); // Add debug logging
       const currentIcon = dislikeButton.querySelector('.dislike-icon');
       if (currentIcon.classList.contains('dislike-icon--disliked')) {
         await removeDislikes(postId);

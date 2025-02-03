@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'update-password-button'
   );
 
-  // 버튼 상태 토글 함수
+  // Toggle button state
   const toggleButtonState = () => {
     const allValid =
       isValidPassword(password.value.trim()) &&
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       : '#ACA0EB';
   };
 
-  // 새 비밀번호 입력 유효성 검사
+  // Validate new password input
   password.addEventListener('input', () => {
     const passwordValue = password.value;
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleButtonState();
   });
 
-  // 비밀번호 확인 입력 유효성 검사
+  // Validate confirm password input
   confirmPassword.addEventListener('input', () => {
     const confirmPasswordValue = confirmPassword.value.trim();
 
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleButtonState();
   });
 
-  // 비밀번호 변경 요청
+  // Update password request
   async function updatePassword(password) {
     if (!password) {
       alert('새로운 비밀번호를 입력하세요.');
@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         alert('비밀번호가 성공적으로 변경되었습니다!');
-        console.log('비밀번호 업데이트 성공!');
       } else if (response.status === 400) {
         alert('잘못된 요청입니다.');
       } else if (response.status === 401) {
@@ -96,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('알 수 없는 오류가 발생했습니다.');
       }
     } catch (error) {
-      console.error(error);
+      console.error('🔥 Failed to update password:', error);
       alert('서버와의 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   }

@@ -1,22 +1,22 @@
 import { BASE_URL } from '../config.js';
 import { isValidEmail, isValidPassword } from './common.js';
 
-// Lottie 애니메이션 표시
+// Display Lottie animation
 function showSuccessAnimation() {
   const successContainer = document.getElementById('success-container');
 
   if (!successContainer) {
-    console.error("'success-container' element not found.");
+    console.error('❌ success-container element not found');
     return;
   }
 
   successContainer.style.display = 'flex';
 
   lottie.loadAnimation({
-    container: document.getElementById('lottie-success'), // 애니메이션 컨테이너
-    renderer: 'svg', // 렌더링 방식
-    loop: false, // 반복 여부
-    autoplay: true, // 자동 재생
+    container: document.getElementById('lottie-success'),
+    renderer: 'svg',
+    loop: false,
+    autoplay: true,
     path: '/assets/Lottie.json',
   });
 
@@ -38,7 +38,7 @@ if (
   !emailHelper ||
   !passwordHelper
 ) {
-  console.error('필수 요소를 입력해주세요.');
+  console.error('⚠️ Required elements not found');
 }
 
 const checkLoginButtonState = () => {
@@ -53,10 +53,10 @@ const checkLoginButtonState = () => {
   }
 };
 
-// 로그인 요청
+// Login request
 async function login(email, password) {
   if (!email || !password) {
-    alert('이메일과 비밀번호를 입력해주세요.');
+    alert('Please enter email and password');
     return;
   }
 
@@ -77,23 +77,22 @@ async function login(email, password) {
 
     if (response.ok) {
       const result = await response.json();
-      console.log('로그인 응답:', result.data);
       showSuccessAnimation();
     } else if (response.status === 400) {
       const result = await response.json();
-      alert('로그인 실패: ' + result.message);
+      alert('Login failed: ' + result.message);
     } else if (response.status === 429) {
-      alert('로그인 시도가 너무 많습니다. 잠시 후 다시 시도해주세요.');
+      alert('Too many login attempts. Please try again later.');
     } else {
-      alert('알 수 없는 오류가 발생했습니다.');
+      alert('An unknown error occurred');
     }
   } catch (error) {
-    console.error('로그인 실패:', error);
-    alert('서버와의 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    console.error('🔥 Login failed:', error);
+    alert('Failed to connect to server. Please try again later.');
   }
 }
 
-// 입력값 유효성 검사
+// Input validation
 emailInput?.addEventListener('input', () => {
   const emailValue = emailInput.value.trim();
 
@@ -133,5 +132,5 @@ loginButton?.addEventListener('click', async (event) => {
   }
 });
 
-// 초기 버튼 상태 설정
+// Set initial button state
 checkLoginButtonState();

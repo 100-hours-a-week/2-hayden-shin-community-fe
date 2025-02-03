@@ -8,13 +8,13 @@ async function fetchUserProfile() {
     });
 
     if (!response.ok) {
-      console.log('something went wrong!');
+      console.error('❌ Failed to fetch user profile');
     }
 
     const result = await response.json();
     return result.data;
   } catch (error) {
-    console.error('프로필 데이터를 가져오는 중 오류 발생:', error);
+    console.error('🔥 Error fetching profile data:', error);
   }
   return null;
 }
@@ -33,6 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   } catch (error) {
-    console.error('헤더 프로필 이미지 업데이트 실패:', error);
+    console.error('🔥 Error updating header profile image:', error);
   }
 });

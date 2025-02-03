@@ -12,14 +12,14 @@ const checkAllValid = () => {
   );
 };
 
-// 제목 입력 제한
+// Title input limit
 titleInput.addEventListener('input', () => {
   if (titleInput.value.length > 26) {
-    titleInput.value = titleInput.value.substring(0, 26); // 26자 제한
+    titleInput.value = titleInput.value.substring(0, 26); // 26 char limit
   }
 });
 
-// 이미지 업로드 미리보기
+// Image upload preview
 const imageFileInput = document.getElementById('image-url');
 imageFileInput.addEventListener('change', () => {
   const file = imageFileInput.files[0];
@@ -28,16 +28,16 @@ imageFileInput.addEventListener('change', () => {
     const reader = new FileReader();
     reader.onload = (e) => {
       imagePreview.style.display = 'block';
-      imagePreview.src = e.target.result; // 업로드된 이미지 미리보기
+      imagePreview.src = e.target.result; // Show uploaded image preview
     };
     reader.readAsDataURL(file);
   } else {
-    imagePreview.src = ''; // 이미지 없을 경우 초기화
+    imagePreview.src = ''; // Reset if no image
     imagePreview.style.display = 'none';
   }
 });
 
-// 게시글 작성 요청
+// Create post request
 async function createPost(title, content, imageFile = null) {
   try {
     const formData = new FormData();
@@ -51,22 +51,19 @@ async function createPost(title, content, imageFile = null) {
       body: formData,
     });
 
-    // 서버 응답 상태 코드 처리
+    // Handle server response status codes
     if (response.status === 201) {
-      const result = await response.json();
-      console.log(`게시글 생성 응답: ${result.data}`);
-
       window.location.href = '/post-list';
     } else if (response.status === 400) {
-      alert('요청이 잘못되었습니다. 제목 및 내용을 확인해주세요.');
+      alert('⚠️ Invalid request. Please check title and content.');
     } else if (response.status === 500) {
-      alert('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      alert('🔧 Internal server error. Please try again later.');
     } else {
-      alert('알 수 없는 오류가 발생했습니다.');
+      alert('❌ Unknown error occurred.');
     }
   } catch (error) {
-    console.error('게시글 작성 요청 실패:', error);
-    alert('서버와의 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    console.error('🔥 Failed to create post:', error);
+    alert('📡 Connection failed. Please try again later.');
   }
 }
 

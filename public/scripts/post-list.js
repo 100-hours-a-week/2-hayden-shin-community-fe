@@ -6,24 +6,23 @@ import {
 } from '../../utils/format.js';
 import { showToastAndRedirect } from './common.js';
 
-// 게시글 리스트 새로고침
+// Refresh post list
 export const refreshPostList = async () => {
   await postList();
-  console.log('게시글 요소값 변경 후 게시글 리스트 새로고침');
 };
 
-// 게시글 렌더링 함수
+// Post rendering function
 const renderPosts = (postsData) => {
   const postListContainer = document.getElementById('post-list-container');
 
   if (!postListContainer) {
-    console.error('게시글이 없습니다.');
+    console.error('❌ No posts container found');
     return;
   }
 
   postListContainer.innerHTML = '';
 
-  // 게시글 데이터 순회 및 렌더링
+  // Iterate and render post data
   postsData.forEach(
     ({
       id,
@@ -56,7 +55,7 @@ const renderPosts = (postsData) => {
         </div>
         <hr />
         <div class="post-user">
-          <img src="${CDN_URL}${url || '/default-profile-image.jpg'}" alt="프로필 이미지" class="post-user-img">
+          <img src="${CDN_URL}${url || '/default-profile-image.jpg'}" alt="Profile Image" class="post-user-img">
           <span>${username}</span>
         </div>
       `;
@@ -70,7 +69,7 @@ const renderPosts = (postsData) => {
   );
 };
 
-// 게시글 리스트
+// Get post list
 async function postList() {
   try {
     const response = await fetch(`${BASE_URL}/posts`, {
@@ -83,28 +82,27 @@ async function postList() {
 
     if (response.status === 200) {
       const result = await response.json();
-      console.log('Fetched posts:', result.data);
       renderPosts(result.data);
     } else if (response.status === 401) {
-      alert('인증되지 않은 사용자입니다. 다시 로그인해주세요.');
+      alert('Unauthorized user. Please login again.');
       window.location.href = '/login';
     } else if (response.status === 500) {
-      alert('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      alert('Internal server error occurred. Please try again later.');
     } else {
-      alert('알 수 없는 오류가 발생했습니다.');
+      alert('An unknown error occurred.');
     }
   } catch (error) {
-    console.error('게시글 목록 요청 실패:', error);
-    alert('서버와의 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    console.error('🔥 Failed to fetch posts:', error);
+    alert('Failed to connect to server. Please try again later.');
   }
 }
 
-// 게시글 로딩
+// Load posts
 document.addEventListener('DOMContentLoaded', () => {
   const createPostButton = document.getElementById('create-post-button');
   if (createPostButton) {
     createPostButton.addEventListener('click', () => {
-      showToastAndRedirect('게시글 작성 페이지로 이동합니다.', '/post-create');
+      showToastAndRedirect('Moving to post creation page', '/post-create');
     });
   }
 
@@ -116,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (card) {
     cardHeight = card.offsetHeight;
   } else {
-    console.warn('cannot find .post-item element');
+    console.error('⚠️ Cannot find .post-item element');
     cardHeight = 200;
   }
 

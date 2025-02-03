@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    // 기존 게시글 데이터 가져오기
+    // Fetch existing post data
     const response = await fetch(`${BASE_URL}/posts/${postId}`, {
       method: 'GET',
       credentials: 'include',
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const result = await response.json();
     const post = result.data.post;
 
-    // 기존 데이터 세팅
+    // Set existing data
     title.value = post.title;
     content.value = post.content;
 
@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     updateButtonState();
   } catch (error) {
-    console.error('게시글 데이터 로드 실패:', error);
+    console.error('🔥 Failed to load post data:', error);
     alert('게시글 데이터를 불러오는 중 문제가 발생했습니다.');
   }
 
-  // 제목 글자 수 제한 처리
+  // Title character limit handler
   title.addEventListener('input', () => {
     if (title.value.length > MAX_TITLE_LENGTH) {
       title.value = title.value.slice(0, MAX_TITLE_LENGTH);
@@ -59,24 +59,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateButtonState();
   });
 
-  // 이미지 업로드 미리보기 처리
+  // Image upload preview handler
   imageInput.addEventListener('change', () => {
     const file = imageInput.files[0];
 
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        imagePreview.src = e.target.result; // 업로드된 이미지 미리보기
+        imagePreview.src = e.target.result; // 📸 Show uploaded image preview
         imagePreview.style.display = 'block';
       };
       reader.readAsDataURL(file);
     } else {
-      imagePreview.src = ''; // 이미지 없을 경우 초기화
+      imagePreview.src = ''; // Reset if no image
       imagePreview.style.display = 'none';
     }
   });
 
-  // 수정 버튼 클릭 처리
+  // Update button click handler
   updateButton.addEventListener('click', async (event) => {
     event.preventDefault();
 
@@ -92,11 +92,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     await editPost(postId, newTitle, newContent, newimage);
   });
 
-  // 초기 버튼 상태 설정
+  // Set initial button state
   updateButtonState();
 });
 
-// 게시글 수정 요청 함수
+// Post update request function
 async function editPost(postId, newTitle, newText, newimage = null) {
   const formData = new FormData();
   formData.append('title', newTitle);
@@ -119,12 +119,12 @@ async function editPost(postId, newTitle, newText, newimage = null) {
       alert('게시글 수정에 실패했습니다.');
     }
   } catch (error) {
-    console.error('게시글 수정 요청 실패:', error);
+    console.error('🔥 Failed to update post:', error);
     alert('서버와의 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
   }
 }
 
-// 수정 버튼 활성화/비활성화 상태 업데이트
+// Update button state
 function updateButtonState() {
   const isValid =
     title.value.trim().length > 0 &&
