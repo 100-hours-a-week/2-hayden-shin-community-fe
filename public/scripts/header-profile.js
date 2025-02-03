@@ -10,7 +10,7 @@ async function fetchUserProfile() {
 
     if (!response.ok) {
       console.error('❌ Failed to fetch user profile');
-      showToastAndRedirect('Need to log in first!', '/login');
+      showToastAndRedirect('Need to log in first', '/login');
     }
 
     const result = await response.json();

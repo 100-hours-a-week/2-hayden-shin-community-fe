@@ -14,11 +14,6 @@ const createComment = async (postId) => {
   const commentInput = document.getElementById('comment-input');
   const content = commentInput.value.trim();
 
-  if (!content) {
-    alert('댓글 내용을 입력해주세요.');
-    return;
-  }
-
   try {
     const response = await fetch(`${BASE_URL}/posts/${postId}/comments`, {
       method: 'POST',
@@ -176,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const content = commentInput.value.trim();
 
     if (!content) {
-      alert('댓글 내용을 입력해주세요.');
+      showToast('Please write something');
       return;
     }
 
