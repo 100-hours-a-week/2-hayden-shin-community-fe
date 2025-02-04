@@ -1,9 +1,15 @@
 hr {
   display: block;
+  border: 0;
   width: 500px;
-  height: 1px;
-  border: none;
-  background-color: var(--color-grey);
+  height: 1.5px;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.05),
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.05)
+  );
+  align-self: center;
 }
 
 .post-detail {
@@ -20,7 +26,8 @@ hr {
   display: flex;
   flex-direction: column;
   margin: 4em 0;
-  padding: 0;
+  padding: var(--side-padding) 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .post-title {
@@ -207,7 +214,7 @@ hr {
 }
 
 .comment-button {
-  margin: 0 10px 10px auto;
+  margin: 10px 10px 10px auto;
   width: 20%;
   padding: 10px;
   color: var(--color-white);
@@ -238,7 +245,7 @@ hr {
   flex-direction: column;
   margin-top: 5px;
   padding: 10px;
-  border-top: 1px solid var(--color-grey);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .comment-header {
